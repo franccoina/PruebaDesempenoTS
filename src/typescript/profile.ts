@@ -1,6 +1,9 @@
-import { IPostRequest } from "../models/post.model"
+import { IPostCreateRequest, IPostCreateResponse, IGetAllPostResponse} from "../models/post.model"
 import { logout } from "./logout";
 import { guardianOffline } from "./guardian";
+import { PostController } from "../controllers/post.controller";
+
+//--------------------------- Profile Page ---------------------------
 
 const form = document.querySelector("form") as HTMLFormElement;
 const titlePost = document.querySelector("#post-title") as HTMLInputElement;
@@ -8,18 +11,42 @@ const bodyPost = document.querySelector("#post-body") as HTMLTextAreaElement;
 
 const logoutBtn = document.querySelector("#btn-logout") as HTMLInputElement;
 
-const postArray: IPostRequest[] = JSON.parse(localStorage.getItem("postArray") || "[]");
+const postArray: IPostCreateRequest[] = JSON.parse(localStorage.getItem("postArray") || "[]");
 
-form.addEventListener("submit", (event: Event) => {
+// Define the URL for the API request
+const urlDomain = "https://api-posts.codificando.xyz";
+
+const approvalPercentage = null
+
+const corrections = null
+
+//--------------------------- Start ---------------------------
+
+form.addEventListener("submit", async (event: Event) => {
     event.preventDefault();
 
-    const newPost = {
+    const newPost: IPostCreateRequest = {
         title: titlePost.value,
         body: bodyPost.value,
+        creationDate: '2024-03-03',
+        creator: '',
+        estimatedPublicationDate: '2024-03-03',
+        status: 'pending',
+        approvalPercentage: 75,
+        corrections: 'Ninguna',
+        platform: 'Data Leaker',
+        postUrl: 'http://example.com/post',
+        multimediaUrl: 'http://example.com/media'
     }
 
-    postArray.push(newPost);
-    localStorage.setItem("cityArray", JSON.stringify(postArray));
+    const postsController = new PostController(urlDomain);
+    const responseCreatePost: IPostCreateResponse = await postsController.createPost(newPost, "/posts")
+
+    console.log(responseCreatePost)
+
+    postArray.push(newPost)
+
+    localStorage.setItem("postArray", JSON.stringify(postArray));
     form.reset();
     alert("Post was succesfully submitted.");
 })
