@@ -1,15 +1,19 @@
-import { IPostRequest } from "../models/post.model"
+import { IPost } from "../models/post.model"
 
-export class CardTemplate{
+export class TemplateController{
     public container: HTMLDivElement
 
     constructor(container: HTMLDivElement){
         this.container = container
     }
 
-    public renderCard(post: IPostRequest): HTMLDivElement{
+    public renderPosts(post: IPost): void{
         const div = document.createElement('div') as HTMLDivElement
+        div.classList.add('card', 'mb-3', 'p-5')
+
         const title = document.createElement('h3') as HTMLHeadElement
+        title.classList.add('card-header','border', 'rounded', 'w-100','mb-5')
+
         const body = document.createElement('p') as HTMLParagraphElement
 
         title.textContent = post.title
@@ -18,7 +22,5 @@ export class CardTemplate{
         div.append(title, body)
 
         this.container.append(div)
-
-        return this.container
     }
 }

@@ -11,6 +11,8 @@ const passwordUser = document.querySelector("#password") as HTMLInputElement;
 // Define the URL for the API request
 const urlDomain = "https://api-posts.codificando.xyz";
 
+//--------------------------- Start ---------------------------
+
 loginForm.addEventListener("submit", async (event: Event) => {
   event.preventDefault();
 
